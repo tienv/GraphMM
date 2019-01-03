@@ -19,7 +19,7 @@ library(GraphMM)
 
 Simulate data from multivariate normal distribution
 
-```{r simulatedata}
+```{r simulatedata, eval=FALSE}
 set.seed(12345)
 n.ver = 20
 m1 = 100
@@ -33,17 +33,20 @@ dataG2 = dat2.vec
 ```
 Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
 
-```{r analysis}
+```{r analysis, eval=FALSE}
 mccores = 8
 res = GraphMMcompute(dataG1, dataG2, mccores = mccores)
 print(res)
+```
+```{r load_pre_compute_file, echo=FALSE}
+print(example1)
 ```
 
 ### Example with data of type matrix
 
 Simulate data from multivariate normal distribution
 
-```{r simulatedata2}
+```{r simulatedata2, eval=FALSE}
 set.seed(4779541)
 datadim = c(3,3)
 n.ver = prod(datadim)
@@ -60,7 +63,7 @@ dataG2 = array(c(dat2.vec), c(m2, datadim))
 ```
 Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
 
-```{r analysis2}
+```{r analysis2, eval=FALSE}
 folder="./Temp"
 est_null = "ashr"
 est_hyper = "mixed"
@@ -70,4 +73,7 @@ res = GraphMMcompute(dataG1 = dataG1, dataG2 = dataG2,
                        est_null = est_null, est_hyper = est_hyper, 
                        folder = folder, mccores = mccores)
 print(res)
+```
+```{r load_pre_compute_file2, echo=FALSE}
+print(example2)
 ```

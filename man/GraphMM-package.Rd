@@ -6,11 +6,10 @@
   Graph-based mixture model for multiple hypothesis testing
 }
 \description{
-This package performs multiple hypothesis testing for equal means using Graph-based mixture model.}
+This package performs multiple hypothesis testing for equal means using Graph-based mixture model, which takes advantage of clustering pattern to improve testing power. }
 \author{
 Tien Vo <tnvo@wisc.edu>, 
-Michael Newton <newton@biostat.wisc.edu>, 
-Maintainer: Tien Vo <tnvo@wisc.edu>
+Michael Newton <newton@biostat.wisc.edu>
 }
 \references{
 Link to paper
