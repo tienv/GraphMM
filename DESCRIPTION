@@ -1,0 +1,16 @@
+Package: GraphMM
+Type: Package
+Title: Graph-based mixture model for multiple hypothesis testing
+Version: 1.0
+Date: 2018-12-21
+Author: Tien Vo <tnvo@wisc.edu">, Michael Newton <newton@biostat.wisc.edu>
+Maintainer: Tien Vo <tnvo@wisc.edu">, Michael Newton <newton@biostat.wisc.edu>
+Description: This package performs 2-sample multiple hypothesis testing for equal means using Graph-based mixture model. 
+Depends: R (>= 2.10)
+License: GPL-3
+biocViews:
+Imports: igraph, ashr, trust, pbmcapply, parallel, qvalue, Rcpp, Matrix
+Suggests: knitr, rmarkdown, MASS
+VignetteBuilder: knitr
+LinkingTo: Rcpp, RcppArmadillo, RcppEigen
+RoxygenNote: 6.1.1

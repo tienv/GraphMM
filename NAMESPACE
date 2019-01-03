@@ -1,0 +1,26 @@
+# Import package dependencies
+importFrom(igraph,make_lattice)
+importFrom(igraph,make_graph)
+importFrom(igraph,vcount)
+importFrom(igraph,ecount)
+importFrom(igraph,V)
+importFrom(igraph,induced_subgraph)
+importFrom(igraph,components)
+importFrom(igraph,get.edges)
+
+
+importFrom(Rcpp, evalCpp)
+importFrom(qvalue,qvalue)
+importFrom(ashr,ash)
+importFrom(trust,trust)
+importFrom(pbmcapply,pbmclapply)
+importFrom(parallel,mclapply)
+
+# export functions for users
+export(GraphMMcompute)
+
+useDynLib(GraphMM, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+
+
+

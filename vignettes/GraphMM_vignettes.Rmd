@@ -1,0 +1,73 @@
+---
+title: 'Examples of using GraphMM package'
+author: 'Tien Vo, Michael Newton'
+date: '`r format(Sys.time(), '%d %B, %Y')`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples of using GraphMM package}
+  %\VignetteEngine{knitr::rmarkdown}
+    \usepackage[utf8](inputenc)
+---
+
+Loading library
+```{r loadlib}
+library(GraphMM)
+```
+
+
+### Example with data of type vector
+
+Simulate data from multivariate normal distribution
+
+```{r simulatedata}
+set.seed(12345)
+n.ver = 20
+m1 = 100
+m2 = 150 
+dat1.vec = MASS::mvrnorm(n=m1, mu=c(rep(0, n.ver/2),rep(0.4, n.ver/2)), Sigma = diag(0.5, n.ver, n.ver))
+dat2.vec = MASS::mvrnorm(n=m2, mu=c(rep(0, n.ver/2), rep(0.6, n.ver/2)), Sigma = diag(0.7, n.ver, n.ver))
+
+dataG1 = dat1.vec
+dataG2 = dat2.vec
+
+```
+Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
+
+```{r analysis}
+mccores = 8
+res = GraphMMcompute(dataG1, dataG2, mccores = mccores)
+print(res)
+```
+
+### Example with data of type matrix
+
+Simulate data from multivariate normal distribution
+
+```{r simulatedata2}
+set.seed(4779541)
+datadim = c(3,3)
+n.ver = prod(datadim)
+m1 = 200
+m2 = 250 
+dat1.vec = MASS::mvrnorm(n=m1, mu=c(1, 1, 1, 1, 1, 0, 0, 2, 2), 
+                         Sigma = diag(0.7, n.ver, n.ver))
+dat2.vec = MASS::mvrnorm(n=m2, mu=c(1.2, 1.2, 1.2, 1.2, 1.2, 0, 0, 2, 2), 
+                         Sigma = diag(1, n.ver, n.ver))
+
+dataG1 = array(c(dat1.vec), c(m1, datadim))
+dataG2 = array(c(dat2.vec), c(m2, datadim))
+
+```
+Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
+
+```{r analysis2}
+folder="./Temp"
+est_null = "ashr"
+est_hyper = "mixed"
+mccores = 8
+
+res = GraphMMcompute(dataG1 = dataG1, dataG2 = dataG2,
+                       est_null = est_null, est_hyper = est_hyper, 
+                       folder = folder, mccores = mccores)
+print(res)
+```
