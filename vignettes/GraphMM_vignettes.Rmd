@@ -1,7 +1,7 @@
 ---
-title: 'Examples of using GraphMM package'
-author: 'Tien Vo, Michael Newton'
-date: '`r format(Sys.time(), '%d %B, %Y')`'
+title: "Examples of using GraphMM package"
+author: "Tien Vo, Michael Newton"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Examples of using GraphMM package}
