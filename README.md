@@ -7,7 +7,7 @@ Read about GraphMM https://github.com/tienv/GraphMMproject/blob/master/paper_AOA
 
 `library(devtools)` 
 
-`install_github("tienv/GraphMM", build_vignettes = TRUE)
+`install_github("tienv/GraphMM", build_vignettes = TRUE)`
 
 # Load package and get started by looking at help files
 `library(GraphMM)`
@@ -15,4 +15,4 @@ Read about GraphMM https://github.com/tienv/GraphMMproject/blob/master/paper_AOA
 `help(package = GraphMM)`
 
 # Unistall package
-remove.packages('GraphMM')
+`remove.packages('GraphMM')`
