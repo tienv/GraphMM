@@ -9,8 +9,8 @@
 ## support within Armadillo prefers / requires it
 
 # choice of compiler, by default use system preference.
-export CC = gcc
-export CXX = g++
+export CC=gcc
+export CXX=g++
 # export MPICXX = mpicxx
 
 CXX_STD = CXX11
