@@ -9,8 +9,7 @@ Description: This package performs 2-sample multiple hypothesis testing for equa
 Depends: R (>= 2.10)
 License: GPL-3
 biocViews:
-Imports: igraph, ashr, trust, pbmcapply, parallel, qvalue, Rcpp, Matrix
-Suggests: knitr, rmarkdown, MASS
+Imports: igraph, ashr, trust, pbmcapply, parallel, qvalue, Rcpp, Matrix, knitr, rmarkdown, MASS
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 6.1.1
