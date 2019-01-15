@@ -14,5 +14,5 @@ Read about GraphMM https://github.com/tienv/GraphMMproject/blob/master/paper_AOA
 
 `help(package = GraphMM)`
 
-# Unistall package
+# Uninstall package
 `remove.packages('GraphMM')`
