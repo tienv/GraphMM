@@ -15,7 +15,7 @@ library(GraphMM)
 ```
 
 
-### Example with data of type vector
+### Example for data associated with line graph
 
 Simulate data from multivariate normal distribution
 
@@ -31,18 +31,19 @@ dataG1 = dat1.vec
 dataG2 = dat2.vec
 
 ```
-Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
+Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Results give posterior probability of null hypothesis for each graph's node. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
 
 ```{r analysis, eval=FALSE}
 mccores = 8
-res = GraphMMcompute(dataG1, dataG2, mccores = mccores)
+res = GraphMMcompute(dataG1, dataG2, type = "line_graph",
+                     mccores = mccores)
 print(res)
 ```
 ```{r load_pre_compute_file, echo=FALSE}
 print(example1)
 ```
 
-### Example with data of type matrix
+### Example for data associated with lattice graph
 
 Simulate data from multivariate normal distribution
 
@@ -61,7 +62,7 @@ dataG1 = array(c(dat1.vec), c(m1, datadim))
 dataG2 = array(c(dat2.vec), c(m2, datadim))
 
 ```
-Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
+Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Results give posterior probability of null hypothesis for each graph's node. Since the method is computationally heavy, it is suggested to use 8 cores to run this example.
 
 ```{r analysis2, eval=FALSE}
 folder="./Temp"
@@ -76,4 +77,72 @@ print(res)
 ```
 ```{r load_pre_compute_file2, echo=FALSE}
 print(example2)
+```
+
+### Example for data associated with a general graph
+
+Create graph structure
+
+```{r create_graph, eval=TRUE, results=FALSE}
+Nunits = 8
+FullG = matrix(c(1, 2,
+                 1, 3,
+                 2, 3,
+                 2, 8,
+                 3, 4,
+                 3, 8,
+                 4, 5,
+                 4, 8,
+                 5, 6,
+                 5, 8,
+                 6, 7,
+                 7, 8), 12, 2, byrow = T)
+graph = list()
+graph[[1]] = Nunits
+graph[[2]] = FullG
+```
+Illustration of graph structure
+
+```{r plot_graph, eval=TRUE, results=TRUE, echo=FALSE}
+par(mar=c(0,0,0,0)+.1)
+igraph::plot.igraph(igraph::make_graph(t(FullG), directed = F),
+            vertex.size = 20, vertex.color = "blue",
+            vertex.frame.color = NA, vertex.label.color = "white",
+            vertex.label.cex = 1, edge.width = 1.75)
+
+```
+
+Simulate data from multivariate normal distribution
+
+```{r simulatedata3, eval=FALSE}
+
+set.seed(4779541)
+n.ver = Nunits
+m1 = 200
+m2 = 250
+dataG1 = MASS::mvrnorm(n=m1, mu=c(1, 1, 1, 0, 0, 0, 1, 1),
+                         Sigma = diag(0.7, n.ver, n.ver))
+dataG2 = MASS::mvrnorm(n=m2, mu=c(1.2, 1.2, 1.2, 0, 0.2, 
+                                    0, 1.2, 1.2),
+                         Sigma = diag(1, n.ver, n.ver))
+
+```
+
+Use function GraphMMcompute() to perform multiple hypothesis testing for equal means. Results give posterior probability of null hypothesis for each graph's node.
+
+```{r analysis3, eval=FALSE}
+folder="./Temp"
+est_null = "ashr"
+est_hyper = "mixed"
+mccores = 2
+
+res = GraphMMcompute(dataG1 = dataG1, dataG2 = dataG2, 
+                     type = "general_graph", graph = graph,
+                     est_null = est_null, 
+                     est_hyper = est_hyper, 
+                     folder = folder, mccores = mccores)
+print(res)
+```
+```{r load_pre_compute_file3, echo=FALSE}
+#print(example3)
 ```

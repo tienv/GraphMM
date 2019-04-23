@@ -1,14 +1,45 @@
 #' Computing posterior probability of null hypotheses
 #'
-#' This function calculates the posterior probability of null hypotheses corresponding to each graph node.
+#' This function calculates the posterior probability of null hypotheses 
+#' corresponding to each graph node.
 #'
-#' @param dataG1 Data for group1. \code{dataG1} need to be either a matrix or a 3-dimension array where the 1st dimension is the number of replicates. When \code{dataG1} is a matrix, it is called 'data of type vector' and the associated graph is a line graph. When \code{dataG1} is a 3-dimension array, it is called 'data of type matrix' and the associated graph is a lattice graph.
-#' @param dataG2 Data for group2. Except for the 1st dimension, other dimensions of \code{dataG2} need to be the same as \code{dataG1}.
-#' @param folder Path to folder that contains temporary files during the analysis. Default to be folder 'Scratch' within the working directory. This folder will be deleted when the analysis is completed. 
+#' @param dataG1 Data for group1. \code{dataG1} need to be either a matrix or 
+#'     a 3-dimension array where the 1st dimension is the number of replicates. 
+#'     When \code{dataG1} is a 3-dimension array, the associated graph is a 
+#'     lattice graph. When \code{dataG1} is a matrix, parameter \code{type} is needed
+#'     to specify type of graph. 
+#' @param dataG2 Data for group2. Except for the 1st dimension, other dimensions 
+#'     of \code{dataG2} need to be the same as \code{dataG1}.
+#' @param type Type of graph (\code{"line_graph"} or \code{"general_graph"}). 
+#'     If \code{type = "line_graph"}, data is associated with a line graph. 
+#'     If \code{type = "general_graph"}, data is associated with a general graph
+#'     specified in \code{graph}.
+#' @param graph A list specifying the graph associated 
+#'     with the data. The list comprises of 2 components: the first component is 
+#'     a scalar giving the number of vertices, the second component is a 
+#'     two-column matrix specifying the edges. The indices of graph's nodes must 
+#'     match the column indices in \code{dataG1} and \code{dataG2}. This parameter is 
+#'     only used when \code{type = "general_graph"}. See the vignettes for examples.
+#' @param folder Path to folder that contains temporary files during the analysis. 
+#'     Default to be folder 'Scratch' in the working directory. This folder 
+#'     will be deleted when the analysis is completed. 
 #' @param est_null Method for estimating prior probability of null hypothesis (\code{"qvalue"} or \code{"ashr"}) corresponding to usage of package \code{qvalue} or \code{ashr}, default to be \code{"ashr"}.
-#' @param prior.null User-defined value for prior probability of null hypothesis. This value needs to be in (0,1). If this value is not provided, it is estimated using method specified by \code{est_null}. 
-#' @param est_hyper Method for estimating hyperparameters (\code{"global"}, \code{"local"} or \code{"mixed"}). With method \code{"global"}, all the hyperparameters are estimated from the whole dataset. With method \code{"local"}, all the hyperparameters are estimated from each neighborhood. With method \code{"mixed"}, all the hyperparameters, except for the matrix parameter in Inverse-Wishart distribution,  are estimated from each neighborhood. Default value is \code{"mixed"}.
-#' @param nbh_size Size of neighborhood considered in the analysis. This value is only used when data is of type vector and requires to be an odd number. The default value for this parameter is 5. When data is of type matrix, the size of neighborhood is always set to be 3.
+#' @param prior.null User-defined value for prior probability of null hypothesis. 
+#'     This value needs to be in (0,1). If this value is not provided, it is 
+#'     estimated using method specified by \code{est_null}. 
+#' @param est_hyper Method for estimating hyperparameters (\code{"global"}, 
+#'     \code{"local"} or \code{"mixed"}). With method \code{"global"}, all the 
+#'     hyperparameters are estimated from the whole dataset. With method 
+#'     \code{"local"}, all the hyperparameters are estimated from each 
+#'     neighborhood. With method \code{"mixed"}, all the hyperparameters, except 
+#'     the parameters of matrices in Inverse-Wishart distribution, are estimated 
+#'     from each neighborhood. Default value is \code{"mixed"}.
+#' @param nbh_size Size of neighborhood considered in the analysis. 
+#'     This value is only used when \code{type = "line_graph"} and requires to be 
+#'     an odd number. The default value for this parameter is 5. When data is 
+#'     associated with a lattice graph, the size of neighborhood is always set 
+#'     to be 3. When data is associated with a general graph, the neighborhood
+#'     of a given node only includes its neighbors.
 #' @param mccores Number of cores to run in parallel.
 
 #' @return Vector or matrix of posterior probability of null hypothesis.
@@ -17,17 +48,30 @@
 #' browseVignettes(package = "GraphMM")
 #' @export
 
-GraphMMcompute = function(dataG1, dataG2, folder="./Scratch", est_null = "ashr", prior.null = NULL,
-                  est_hyper = "mixed", nbh_size = 5, mccores=1)
+GraphMMcompute = function(dataG1, dataG2, type, graph,
+                          folder="./Scratch", est_null = "ashr", prior.null = NULL,
+                          est_hyper = "mixed", nbh_size = 5, mccores=1)
 {
   if (!identical(dim(dataG1)[-1], dim(dataG2)[-1])) 
     stop('Error: data dimensions need to be the same for 2 groups. \n\n') 
   if (length(dim(dataG1)) == 2) {
-      datatype = "vector"
+      if (type == "line_graph") {
+          graphtype = "line"
+      } else if (type == "general_graph") {
+            graphtype = "general"
+            if (length(graph)!=2) {
+              stop("Error: Invalid input for graph. \n\n")
+            } else if ((length(graph[[1]]) !=1) || (dim(graph[[2]])[2]!=2)) {
+              stop("Error: Invalid input for graph. \n\n")
+            }
+      } else {
+          stop("Error: Invalid type of graph, need to be either line_graph or general_graph \n\n")
+      }
+      
   } else if (length(dim(dataG1)) == 3){
-      datatype = "matrix" 
+      graphtype = "lattice" 
   } else {
-    stop("Error: data need to be vector or matrix. \n\n")
+    stop("Error: Invalid data dimension. \n\n")
   }
   if (!(est_hyper %in% c("global", "local", "mixed")))
   {
@@ -54,23 +98,29 @@ GraphMMcompute = function(dataG1, dataG2, folder="./Scratch", est_null = "ashr",
     stop("Error: neighborhood size is too big and the analysis will be very slow. \n")
   }
   
-  EEPostProb = GraphMM1(dataG1, dataG2, datatype, folder, est_null, prior.null,
+  EEPostProb = GraphMM1(dataG1, dataG2, graphtype, graph, folder, est_null, prior.null,
                                 est_hyper, nbh_size, mccores)
   return(EEPostProb)
 }
 
-GraphMM1 = function(dataG1, dataG2, datatype, folder, est_null, prior.null,
-               est_hyper, nbh_size, mccores)
+GraphMM1 = function(dataG1, dataG2, graphtype, graph, folder, est_null, prior.null,
+                    est_hyper, nbh_size, mccores)
 {
-  if (datatype =="vector")
+  if (graphtype =="line")
   {
     dat1.vec = dataG1
     dat2.vec = dataG2
-    message(paste("Input data is of type vector. The corresponding graph is line graph \n",
+    message(paste("Input data is associated with a line graph \n",
                   "Number of vertices:  ", ncol(dat1.vec), "\n", "Computing ... \n", sep = ""))
   }
-
-  if (datatype == "matrix")
+  if (graphtype =="general")
+  {
+    dat1.vec = dataG1
+    dat2.vec = dataG2
+    message(paste("Input data is associated with a general graph \n",
+                  "Number of vertices:  ", graph[[1]], "\n", "Computing ... \n", sep = ""))
+  }
+  if (graphtype == "lattice")
   {
     size.im = dim(dataG1)[c(2,3)]
     IndicatorMatrix = matrix(1, size.im[1], size.im[2])
@@ -80,7 +130,7 @@ GraphMM1 = function(dataG1, dataG2, datatype, folder, est_null, prior.null,
     Nunits = dim(IndexList)[1]
     dat1.vec <- t(apply(dataG1, 1, c))
     dat2.vec <- t(apply(dataG2, 1, c))
-    message(paste("Input data is of type matrix. The corresponding graph is lattice graph \n",
+    message(paste("Input data is associated with a lattice graph \n",
                   "Number of vertices:  ", ncol(dat1.vec), "\n", "Computing ... \n", sep = ""))
     
   }
@@ -148,20 +198,25 @@ GraphMM1 = function(dataG1, dataG2, datatype, folder, est_null, prior.null,
   
   ListPara$PriorType = 4
   
-  if (datatype =="vector")
+  if (graphtype =="line")
   {
     Pspantree = unlist(pbmcapply::pbmclapply(1:dim(dat1.vec)[2], GetPostProb_vector, dat1.vec, dat2.vec, nbh_size, 
-                                folder, est_hyper, ListPara, mc.cores = mccores))
+                                             folder, est_hyper, ListPara, mc.cores = mccores))
   }
-  if (datatype == "matrix")
+  if (graphtype == "lattice")
   {
     Pspantree1 = unlist(pbmcapply::pbmclapply(1:dim(IndexList)[1], GetPostProb_matrix, dat1.vec, dat2.vec,
-                                size.im, folder, est_hyper, ListPara, IndicatorVector, IndexList, mccores,
-                              mc.cores = 1))
+                                              size.im, folder, est_hyper, ListPara, IndicatorVector, IndexList, mccores,
+                                              mc.cores = 1))
     
     Pspantree = matrix(Pspantree1, nrow = size.im[1], ncol = size.im[2])
+  }
+  if (graphtype == "general")
+  {
+    Pspantree = unlist(pbmcapply::pbmclapply(1:dim(dat1.vec)[2], GetPostProb_general, dat1.vec, dat2.vec, graph, 
+                                             folder, est_hyper, ListPara, mc.cores = mccores))
+    
   }
   unlink(folder, recursive = T)
   return(Pspantree)
 }
-

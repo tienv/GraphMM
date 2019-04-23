@@ -1,6 +1,7 @@
 # Import package dependencies
 importFrom(igraph,make_lattice)
 importFrom(igraph,make_graph)
+importFrom(igraph,plot.igraph)
 importFrom(igraph,vcount)
 importFrom(igraph,ecount)
 importFrom(igraph,V)
