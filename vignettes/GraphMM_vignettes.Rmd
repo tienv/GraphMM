@@ -144,5 +144,5 @@ res = GraphMMcompute(dataG1 = dataG1, dataG2 = dataG2,
 print(res)
 ```
 ```{r load_pre_compute_file3, echo=FALSE}
-#print(example3)
+print(example3)
 ```
