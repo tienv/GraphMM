@@ -21,7 +21,9 @@ GetPostProb_general = function(v, dat1.vec, dat2.vec, graph,
   A = matrix((FullG %in% v_list), nrow = dim(FullG)[1], 
              ncol = dim(FullG)[2])
   ind3 = which(rowSums(A)==2)
-  SubG = FullG[ind3,]
+  if (length(ind3)>1) SubG = FullG[ind3,] else 
+  SubG = matrix(FullG[ind3,], nrow = length(ind3), ncol = dim(FullG)[2])
+
   SubG_reindex = matrix(match(SubG, v_list), 
                         nrow = dim(SubG)[1], 
                         ncol = dim(SubG)[2])
