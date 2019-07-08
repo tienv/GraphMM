@@ -24,4 +24,3 @@ useDynLib(GraphMM, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")
 
 
-

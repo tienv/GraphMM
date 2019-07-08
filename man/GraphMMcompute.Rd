@@ -4,28 +4,57 @@
 \alias{GraphMMcompute}
 \title{Computing posterior probability of null hypotheses}
 \usage{
-GraphMMcompute(dataG1, dataG2, type, graph, folder = "./Scratch", est_null = "ashr",
-  prior.null = NULL, est_hyper = "mixed", nbh_size = 5,
-  mccores = 1)
+GraphMMcompute(dataG1, dataG2, type, graph, folder = "./Scratch",
+  est_null = "ashr", prior.null = NULL, est_hyper = "mixed",
+  nbh_size = 5, mccores = 1)
 }
 \arguments{
-\item{dataG1}{Data for group1. \code{dataG1} need to be either a matrix or a 3-dimension array where the 1st dimension is the number of replicates. When \code{dataG1} is a 3-dimension array, the associated graph is a lattice graph. When \code{dataG1} is a matrix, parameter \code{type} is needed to specify type of graph.}
+\item{dataG1}{Data for group1. \code{dataG1} need to be either a matrix or 
+a 3-dimension array where the 1st dimension is the number of replicates. 
+When \code{dataG1} is a 3-dimension array, the associated graph is a 
+lattice graph. When \code{dataG1} is a matrix, parameter \code{type} is needed
+to specify type of graph.}
 
-\item{dataG2}{Data for group2. Except for the 1st dimension, other dimensions of \code{dataG2} need to be the same as \code{dataG1}.}
+\item{dataG2}{Data for group2. Except for the 1st dimension, other dimensions 
+of \code{dataG2} need to be the same as \code{dataG1}.}
 
-\item{type}{Type of graph (\code{"line_graph"} or \code{"general_graph"}). If \code{type = "line_graph"}, data is associated with a line graph. If \code{type = "general_graph"}, data is associated with a general graph specified in \code{graph}.
+\item{type}{Type of graph (\code{"line_graph"} or \code{"general_graph"}). 
+If \code{type = "line_graph"}, data is associated with a line graph. 
+If \code{type = "general_graph"}, data is associated with a general graph
+specified in \code{graph}.}
 
-\item{graph}{A list specifying the graph associated with the data. The list comprises of 2 components: the first component is a scalar giving the number of vertices, the second component is a two-column matrix specifying the edges. The indices of graph's nodes must match the column indices in \code{dataG1} and \code{dataG2}. This parameter is only used when \code{type = "general_graph"}. See the vignettes for examples.}
+\item{graph}{A list specifying the graph associated 
+with the data. The list comprises of 2 components: the first component is 
+a scalar giving the number of vertices, the second component is a 
+two-column matrix specifying the edges. The indices of graph's nodes must 
+match the column indices in \code{dataG1} and \code{dataG2}. This parameter is 
+only used when \code{type = "general_graph"}. See the vignettes for examples.}
 
-\item{folder}{Path to folder that contains temporary files during the analysis. Default to be folder 'Scratch' within the working directory. This folder will be deleted when the analysis is completed.}
+\item{folder}{Path to folder that contains temporary files during the analysis. 
+Default to be folder 'Scratch' in the working directory. This folder 
+will be deleted when the analysis is completed.}
 
-\item{est_null}{Method for estimating prior probability of null hypothesis (\code{"qvalue"} or \code{"ashr"}) corresponding to usage of package \code{qvalue} or \code{ashr}, default to be \code{"ashr"}.}
+\item{est_null}{Method for estimating prior probability of null hypothesis (\code{"qvalue"} or \code{"ashr"}) corresponding to usage of 
+package \code{qvalue} or \code{ashr}, default to be \code{"ashr"}.}
 
-\item{prior.null}{User-defined value for prior probability of null hypothesis. This value needs to be in (0,1). If this value is not provided, it is estimated using method specified by \code{est_null}.}
+\item{prior.null}{User-defined value for prior probability of null hypothesis. 
+This value needs to be in (0,1). If this value is not provided, it is 
+estimated using method specified by \code{est_null}.}
 
-\item{est_hyper}{Method for estimating hyperparameters (\code{"global"}, \code{"local"} or \code{"mixed"}). With method \code{"global"}, all the hyperparameters are estimated from the whole dataset. With method \code{"local"}, all the hyperparameters are estimated from each neighborhood. With method \code{"mixed"}, all the hyperparameters, except for the matrix parameter in Inverse-Wishart distribution,  are estimated from each neighborhood. Default value is \code{"mixed"}.}
+\item{est_hyper}{Method for estimating hyperparameters (\code{"global"}, 
+\code{"local"} or \code{"mixed"}). With method \code{"global"}, all the 
+hyperparameters are estimated from the whole dataset. With method 
+\code{"local"}, all the hyperparameters are estimated from each 
+neighborhood. With method \code{"mixed"}, all the hyperparameters, except 
+the parameters of matrices in Inverse-Wishart distribution, are estimated 
+from each neighborhood. Default value is \code{"mixed"}.}
 
-\item{nbh_size}{Size of neighborhood considered in the analysis. This value is only used when \code{type = "line_graph"} and requires to be an odd number. The default value for this parameter is 5. When data is associated with a lattice graph, the size of neighborhood is always set to be 3. When data is associated with a general graph, the neighborhood of a given node only includes its neighbors.}
+\item{nbh_size}{Size of neighborhood considered in the analysis. 
+This value is only used when \code{type = "line_graph"} and requires to be 
+an odd number. The default value for this parameter is 5. When data is 
+associated with a lattice graph, the size of neighborhood is always set 
+to be 3. When data is associated with a general graph, the neighborhood
+of a given node only includes its neighbors.}
 
 \item{mccores}{Number of cores to run in parallel.}
 }
@@ -33,7 +62,8 @@ GraphMMcompute(dataG1, dataG2, type, graph, folder = "./Scratch", est_null = "as
 Vector or matrix of posterior probability of null hypothesis.
 }
 \description{
-This function calculates the posterior probability of null hypotheses corresponding to each graph node.
+This function calculates the posterior probability of null hypotheses 
+corresponding to each graph node.
 }
 \examples{
 # See package vignettes
