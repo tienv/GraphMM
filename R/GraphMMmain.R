@@ -41,7 +41,7 @@
 #'     to be 3. When data is associated with a general graph, the neighborhood
 #'     of a given node only includes its neighbors.
 #' @param mccores Number of cores to run in parallel.
-
+#'
 #' @return Vector or matrix of posterior probability of null hypothesis.
 #' @examples 
 #' # See package vignettes
