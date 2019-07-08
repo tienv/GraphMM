@@ -4,14 +4,18 @@
 \alias{GraphMMcompute}
 \title{Computing posterior probability of null hypotheses}
 \usage{
-GraphMMcompute(dataG1, dataG2, folder = "./Scratch", est_null = "ashr",
+GraphMMcompute(dataG1, dataG2, type, graph, folder = "./Scratch", est_null = "ashr",
   prior.null = NULL, est_hyper = "mixed", nbh_size = 5,
   mccores = 1)
 }
 \arguments{
-\item{dataG1}{Data for group1. \code{dataG1} need to be either a matrix or a 3-dimension array where the 1st dimension is the number of replicates. When \code{dataG1} is a matrix, it is called 'data of type vector' and the associated graph is a line graph. When \code{dataG1} is a 3-dimension array, it is called 'data of type matrix' and the associated graph is a lattice graph.}
+\item{dataG1}{Data for group1. \code{dataG1} need to be either a matrix or a 3-dimension array where the 1st dimension is the number of replicates. When \code{dataG1} is a 3-dimension array, the associated graph is a lattice graph. When \code{dataG1} is a matrix, parameter \code{type} is needed to specify type of graph.}
 
 \item{dataG2}{Data for group2. Except for the 1st dimension, other dimensions of \code{dataG2} need to be the same as \code{dataG1}.}
+
+\item{type}{Type of graph (\code{"line_graph"} or \code{"general_graph"}). If \code{type = "line_graph"}, data is associated with a line graph. If \code{type = "general_graph"}, data is associated with a general graph specified in \code{graph}.
+
+\item{graph}{A list specifying the graph associated with the data. The list comprises of 2 components: the first component is a scalar giving the number of vertices, the second component is a two-column matrix specifying the edges. The indices of graph's nodes must match the column indices in \code{dataG1} and \code{dataG2}. This parameter is only used when \code{type = "general_graph"}. See the vignettes for examples.}
 
 \item{folder}{Path to folder that contains temporary files during the analysis. Default to be folder 'Scratch' within the working directory. This folder will be deleted when the analysis is completed.}
 
@@ -21,7 +25,7 @@ GraphMMcompute(dataG1, dataG2, folder = "./Scratch", est_null = "ashr",
 
 \item{est_hyper}{Method for estimating hyperparameters (\code{"global"}, \code{"local"} or \code{"mixed"}). With method \code{"global"}, all the hyperparameters are estimated from the whole dataset. With method \code{"local"}, all the hyperparameters are estimated from each neighborhood. With method \code{"mixed"}, all the hyperparameters, except for the matrix parameter in Inverse-Wishart distribution,  are estimated from each neighborhood. Default value is \code{"mixed"}.}
 
-\item{nbh_size}{Size of neighborhood considered in the analysis. This value is only used when data is of type vector and requires to be an odd number. The default value for this parameter is 5. When data is of type matrix, the size of neighborhood is always set to be 3.}
+\item{nbh_size}{Size of neighborhood considered in the analysis. This value is only used when \code{type = "line_graph"} and requires to be an odd number. The default value for this parameter is 5. When data is associated with a lattice graph, the size of neighborhood is always set to be 3. When data is associated with a general graph, the neighborhood of a given node only includes its neighbors.}
 
 \item{mccores}{Number of cores to run in parallel.}
 }
