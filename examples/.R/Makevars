@@ -1,10 +1,10 @@
- # The following statements are required to use the clang4 binary
- CC=/usr/local/clang4/bin/clang
- CXX=/usr/local/clang4/bin/clang++
- CXX11=/usr/local/clang4/bin/clang++
- CXX14=/usr/local/clang4/bin/clang++
- CXX17=/usr/local/clang4/bin/clang++
- CXX1X=/usr/local/clang4/bin/clang++
- LDFLAGS=-L/usr/local/clang4/lib
- # End clang4 inclusion statements
+ # The following statements are required to use the clang6 binary
+ CC=/usr/local/clang6/bin/clang
+ CXX=/usr/local/clang6/bin/clang++
+ CXX11=/usr/local/clang6/bin/clang++
+ CXX14=/usr/local/clang6/bin/clang++
+ CXX17=/usr/local/clang6/bin/clang++
+ CXX1X=/usr/local/clang6/bin/clang++
+ LDFLAGS=-L/usr/local/clang6/lib
+ # End clang6 inclusion statements
  
