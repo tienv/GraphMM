@@ -1,7 +1,7 @@
 # GraphMM
 Package GraphMM performs multiple hypothesis testing using graph-based mixture model, which take advantage of clustering pattern to improve testing power. 
 
-Read about GraphMM https://github.com/tienv/GraphMMproject/blob/master/paper_AOAS/GraphMMPaper.pdf
+Read about GraphMM https://github.com/tienv/GraphMMproject/tree/master/paper_biostat/GraphMM.pdf
 
 # Installation Instructions
 
