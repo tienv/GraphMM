@@ -52,7 +52,8 @@ GetPostProb_general = function(v, dat1.vec, dat2.vec, graph,
   #####################################################
   Bell_number = c(1, 2, 5, 15, 52, 203, 877, 4140, 21147,
                   115975, 678570, 4213597)
-  iteration = Bell_number[n.ver]*10       
+  ##iteration = Bell_number[n.ver]*10       
+  iteration = Bell_number[n.ver]*2   ## speed  it up, shorten chain
   prior.type = 2   # uniform prior
   a = 2 # this is ignored in case of uniform prior
   L = SamplingPrior(iter = iteration, NVer = n.ver, 

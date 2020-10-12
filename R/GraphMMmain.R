@@ -227,7 +227,7 @@ GraphMM1 = function(dataG1, dataG2, graphtype, graph, folder, est_null, prior.nu
 	#    Pspantree = unlist(pbmcapply::pbmclapply(1:dim(dat1.vec)[2], GetPostProb_general, dat1.vec, dat2.vec, graph, 
        	#                                     folder, est_hyper, ListPara, mc.cores = mccores))
 	# just compute at one node
-	vstar <- 1  ## needs correction; 
+	vstar <- 1  ## needs checking (last version looped over all nodes; let's just do one)
 	Pspantree <- GetPostProb_general( vstar, dat1.vec, dat2.vec, graph, folder, est_hyper, ListPara )
   }
   unlink(folder, recursive = T)
