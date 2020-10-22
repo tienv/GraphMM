@@ -216,11 +216,16 @@ GraphMM1 = function(dataG1, dataG2, graphtype, graph, folder, est_null, prior.nu
   }
   if (graphtype == "lattice")
   {
-    Pspantree1 = unlist(pbmcapply::pbmclapply(1:dim(IndexList)[1], GetPostProb_matrix, dat1.vec, dat2.vec,
-                                              size.im, folder, est_hyper, ListPara, IndicatorVector, IndexList, mccores,
-                                              mc.cores = 1))
-    
-    Pspantree = matrix(Pspantree1, nrow = size.im[1], ncol = size.im[2])
+    ###    Pspantree1 = unlist(pbmcapply::pbmclapply(1:dim(IndexList)[1], GetPostProb_matrix, dat1.vec, dat2.vec,
+    ###                                        size.im, folder, est_hyper, ListPara, IndicatorVector, IndexList, mccores,
+    ###                                          mc.cores = 1))
+    ###Pspantree = matrix(Pspantree1, nrow = size.im[1], ncol = size.im[2])
+
+    ## just do  central node of 3x3 
+    Pspantree =  GetPostProb_matrix(5, dat1.vec, dat2.vec,
+                                           size.im, folder, est_hyper, ListPara, IndicatorVector, IndexList, mccores)
+
+
   }
   if (graphtype == "general")
   {
