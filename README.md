@@ -4,7 +4,7 @@ Package GraphMM performs multiple hypothesis testing using graph-based mixture m
 Read about GraphMM https://github.com/tienv/GraphMMproject/tree/master/paper_biostat/GraphMM.pdf
 
 ## Requirements
-velocyto.R can be installed on unix-flavored systems, and requires the following key elements:
+graphmm.R can be installed on any system, and requires the following key elements:
 
 * R (≥ 3.3.0)
 * Open MP support
