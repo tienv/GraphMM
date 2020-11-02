@@ -68,7 +68,7 @@ CPPFLAGS=-I/usr/local/opt/gettext/include -I/usr/local/opt/llvm/include
 ```
 This should resolve the '-fopenmp' issue on mac
 
-## 2: igraph installation
+### 2: igraph installation error
 
 If you are facing issues while installing devtools or igraph library, you can try the following to fix the issue. 
 
